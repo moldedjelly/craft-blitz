@@ -545,10 +545,15 @@ class RefreshCacheService extends Component
         $this->batchMode = true;
         $now = Db::prepareDateForDb(new DateTime());
 
+        // matj
+        $nowPre = new DateTime();
+        $minutesAgo = Db::prepareDateForDb($nowPre->modify("-3 minutes"));
+
         // Check for expired caches to invalidate
         $cacheIds = CacheRecord::find()
             ->select('id')
             ->where(['<', 'expiryDate', $now])
+            ->andWhere(['>', 'expiryDate', $minutesAgo])
             ->column();
 
         $this->addCacheIds($cacheIds);
