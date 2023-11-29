@@ -247,6 +247,9 @@ class CloudflarePurger extends BaseCachePurger
             $requests[] = new Request($method, $uri, [], json_encode($params));
         }
 
+        // matj
+        Blitz::$plugin->log("sendRequest() - method: ".$method." / action: ".$action."\n".print_r($params, true), [], 'info');
+
         // Create a pool of requests
         $pool = new Pool($client, $requests, [
             'fulfilled' => function() use (&$response) {
